@@ -92,16 +92,13 @@ void messageArrived(MQTT::MessageData& md) {
 }
 
 void publish_message(MQTT::Client<MQTTNetwork, Countdown>* client) {
-    if (mode == 0 || message_num == 10) {
-        message_num = 0;
-    }
-    else {
+    
         message_num++;
-    }
+    
 
     MQTT::Message message;
     char buff[100];
-    sprintf(buff, "%d %d %f", mode, message_num, true_angle);
+    sprintf(buff, "%d %d %f", mode, message_num, angle);
 
     message.qos = MQTT::QOS0;
     message.retained = false;
@@ -366,13 +363,13 @@ int Gestureselect() {
                 circ=0;
                 slop=0;
             }
-            if(value[0]>200){
+            if(value[0]>200||value[0]<-200){
                 forw++;
             }
-            if(value[1]>200){
+            if(value[1]>200||value[1]<-200){
                 slop++;
             }
-            if(value[2]>200){
+            if(value[2]>200||value[2]<-200){
                 circ++;
             }
             if(ge==499&&m<10){
@@ -428,7 +425,7 @@ int Gestureselect() {
         }
         if (mode == 1) {
             for(int aa=0;aa<10;aa++){
-                printf("%d, %d\n", aa, mygesture[aa]);
+                printf("%d, %d\n", aa+1, mygesture[aa]);
             }
             myled1 = 0;
             //uLCD.printf("KKKK");
